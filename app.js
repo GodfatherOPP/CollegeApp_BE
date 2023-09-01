@@ -4,7 +4,7 @@ const InitiateMongoServer = require("./config/db");
 // Initiate Mongo Server
 InitiateMongoServer();
 
-const Routes = require("./routes");
+const Routes = require("./routes"); /// why not index js is added in the route
 
 const app = express();
 
@@ -47,6 +47,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", Routes.Authentication);
 
 //Routes for Student
+app.use("/api/student", Routes.Student);
 
 // Optional fallthrough error handler
 app.use(function onError(err, req, res, next) {

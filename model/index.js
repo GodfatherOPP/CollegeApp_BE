@@ -13,5 +13,6 @@ model.UserAuth = require("./auth/UserAuth");
 model.AgentSetting = require("./auth/AgentSetting");
 model.AdminSetting = require("./auth/AdminSetting");
 model.AgentRoute = require("./auth/Routes");
+model.Student = require("./student/Student");
 
 module.exports = model;

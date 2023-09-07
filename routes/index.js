@@ -1,4 +1,4 @@
-var Authentication = require("./auth/Authentication");
+const Authentication = require("./auth/Authentication");
 const student = require("./student/student");
 
 module.exports = {

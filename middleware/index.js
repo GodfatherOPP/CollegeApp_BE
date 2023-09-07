@@ -1,12 +1,9 @@
-const auth = require('./auth'),
-    customerAuth = require('./customerAuth'),
-    grantAccess = require('./grantAccess'),
-    permissionAccess = require('./permissionAccess')
-
+const auth = require("./auth"),
+  grantAccess = require("./grantAccess"),
+  permissionAccess = require("./permissionAccess");
 
 module.exports = {
-    Auth: auth,
-    customerAuth: customerAuth,
-    GrantAccess: grantAccess,
-    permissionAccess :permissionAccess
-}
+  Auth: auth,
+  GrantAccess: grantAccess,
+  permissionAccess: permissionAccess,
+};

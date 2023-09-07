@@ -48,16 +48,16 @@ function initial() {
       });
       new Role({
         id: 3,
-        name: "Agent",
-        role: "agent",
+        name: "Teacher",
+        role: "teacher",
       }).save((err) => {
         if (err) console.error("Error(role[3]):", err);
         console.log("Agent added to roles collection");
       });
       new Role({
         id: 4,
-        name: "Customer",
-        role: "customer",
+        name: "Student",
+        role: "student",
       }).save((err) => {
         if (err) console.error("Error(role[4]):", err);
         console.log("Customer added to roles collection");

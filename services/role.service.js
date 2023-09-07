@@ -21,5 +21,17 @@ exports.roles = (function () {
     .updateAny("profile")
     .deleteAny("profile");
 
+  ac.grant("student").readOwn("profile").updateOwn("profile");
+  ac.grant("teacher")
+    .extend("student")
+    .createAny("profile")
+    .readAny("profile")
+    .updateAny("profile")
+    .deleteAny("profile")
+    .createAny("student")
+    .readAny("student")
+    .updateAny("student")
+    .deleteAny("student");
+
   return ac;
 })();

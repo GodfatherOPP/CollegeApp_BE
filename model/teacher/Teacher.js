@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
-const StudentSchema = mongoose.Schema({
+const TeacherSchema = mongoose.Schema({
   createdby: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "createdby",
@@ -39,23 +39,12 @@ const StudentSchema = mongoose.Schema({
     state: String,
     zip: String,
   },
-  enrollmentDate: {
+  JoiningDate: {
     type: Date,
   },
-  studentID: {
+  employeeID: {
     type: String,
     unique: true,
-  },
-  parentName: {
-    type: String,
-  },
-  parentEmail: {
-    type: String,
-    lowercase: true,
-    trim: true,
-  },
-  parentContactNumber: {
-    type: String,
   },
   emergencyContactName: {
     type: String,
@@ -68,6 +57,6 @@ const StudentSchema = mongoose.Schema({
 });
 
 // export model Role with RolesSchema
-StudentSchema.plugin(mongoosePaginate);
+TeacherSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("Student", StudentSchema);
+module.exports = mongoose.model("Teacher", TeacherSchema);

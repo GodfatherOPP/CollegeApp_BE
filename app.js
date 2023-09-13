@@ -49,6 +49,9 @@ app.use("/api/v1/auth", Routes.Authentication);
 //Routes for Student
 app.use("/api/v1/student", Routes.Student);
 
+//Routes for Teacher
+app.use("/api/v1/teacher", Routes.Teacher);
+
 // Optional fallthrough error handler
 app.use(function onError(err, req, res, next) {
   // The error id is attached to `res.sentry` to be returned

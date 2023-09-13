@@ -1,14 +1,14 @@
 const model = require("../model");
-const Student = model.Student;
+const Teacher = model.Teacher;
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const algorithm = "aes-256-cbc";
 const key = process.env.CRYPTO_SECRET_KEY;
 
-class StudentService {
-  async checkEmailExistWithOtherStudnet(email, id) {
+class TeacherService {
+  async checkEmailExistWithOtherTeacher(email, id) {
     try {
-      const user = await Student.findOne({ email }).lean().exec();
+      const user = await Teacher.findOne({ email }).lean().exec();
 
       if (user === null || String(user._id) === String(id)) return true;
 
@@ -19,9 +19,9 @@ class StudentService {
     }
   }
 
-  async checkPhoneNumberExistWithOtherStudent(phone, id) {
+  async checkPhoneNumberExistWithOtherTeacher(phone, id) {
     try {
-      const user = await Student.findOne({ phone }).lean().exec();
+      const user = await Teacher.findOne({ phone }).lean().exec();
       if (user === null || String(user._id) === String(id)) return true;
       return false;
     } catch (error) {
@@ -30,9 +30,9 @@ class StudentService {
     }
   }
 
-  async checkStudentIDExistWithOtherStudent(studentID, id) {
+  async checkemployeeIDExistWithOtherTeacher(employeeID, id) {
     try {
-      const user = await Student.findOne({ studentID }).lean().exec();
+      const user = await Teacher.findOne({ employeeID }).lean().exec();
       if (user === null || String(user._id) === String(id)) return true;
       return false;
     } catch (error) {
@@ -66,4 +66,4 @@ class StudentService {
     return decrypted;
   }
 }
-module.exports = StudentService;
+module.exports = TeacherService;

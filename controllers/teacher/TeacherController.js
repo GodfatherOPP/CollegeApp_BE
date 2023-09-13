@@ -1,8 +1,8 @@
 const { validationResult } = require("express-validator");
 const model = require("../../model");
-const Student = model.Student;
-const StudentService = require("../../services/student.service");
-const StudentServiceInstance = new StudentService();
+const Teacher = model.Teacher;
+const TeacherService = require("../../services/teacher.service");
+const TeacherServiceInstance = new TeacherService();
 const mongoose = model.mongoose;
 
 ////
@@ -14,7 +14,7 @@ function getPagination(page, size) {
 ////
 
 //function to create student
-const addstudent = async (req, res) => {
+const addteacher = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -34,20 +34,17 @@ const addstudent = async (req, res) => {
     dateOfBirth,
     gender,
     contactNumber,
-    enrollmentDate,
-    studentID,
-    parentName,
-    parentEmail,
-    parentContactNumber,
+    address,
+    JoiningDate,
+    employeeID,
     emergencyContactName,
     emergencyContactNumber,
-    address,
   } = req.body;
 
-  const password = await StudentServiceInstance.encryptPassword("a1b2c3d4");
+  const password = TeacherServiceInstance.encryptPassword("a1b2c3d4");
 
   try {
-    const student = new Student({
+    const teacher = new Teacher({
       createdby,
       name,
       email,
@@ -56,24 +53,21 @@ const addstudent = async (req, res) => {
       dateOfBirth,
       gender,
       contactNumber,
-      enrollmentDate,
-      studentID,
-      parentName,
-      parentEmail,
-      parentContactNumber,
+      address,
+      JoiningDate,
+      employeeID,
       emergencyContactName,
       emergencyContactNumber,
-      address,
       password,
     });
 
-    await student
+    await teacher
       .save()
       .then((response) => {
         res.status(200).json({
           statusCode: 200,
           status: "success",
-          message: "Student Successfully Created.",
+          message: "Teacher Successfully Created.",
           user: response,
         });
       })
@@ -86,7 +80,7 @@ const addstudent = async (req, res) => {
         });
       });
   } catch (err) {
-    console.log("addstudent", err.message);
+    console.log("addteacher", err.message);
     res.status(500).json({
       statusCode: 500,
       status: "error",
@@ -96,8 +90,8 @@ const addstudent = async (req, res) => {
   }
 };
 
-//function to List all student
-const fetchallstudent = async (req, res) => {
+//function to List all Teacher
+const fetchallteacher = async (req, res) => {
   try {
     const { page, size } = req.query;
     const { limit, offset } = getPagination(page, size);
@@ -105,7 +99,7 @@ const fetchallstudent = async (req, res) => {
       offset,
       limit,
     };
-    const data = await Student.paginate({}, options);
+    const data = await Teacher.paginate({}, options);
     res.status(200).json({
       statusCode: 200,
       totalItems: data.totalDocs,
@@ -114,7 +108,7 @@ const fetchallstudent = async (req, res) => {
       currentPage: data.page - 1,
     });
   } catch (err) {
-    console.log("fetchallstudent error", err.message);
+    console.log("fetchallteacher error", err.message);
     res.status(500).json({
       statusCode: 500,
       status: "error",
@@ -124,9 +118,9 @@ const fetchallstudent = async (req, res) => {
   }
 };
 
-//functjon to update student
+//functjon to update Teacher
 
-const updatestudent = async (req, res) => {
+const updateteacher = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -146,25 +140,22 @@ const updatestudent = async (req, res) => {
       dateOfBirth,
       gender,
       contactNumber,
-      enrollmentDate,
-      studentID,
-      parentName,
-      parentEmail,
-      parentContactNumber,
+      address,
+      JoiningDate,
+      employeeID,
       emergencyContactName,
       emergencyContactNumber,
-      address,
     } = req.body;
     const id = req.params.id;
     if (mongoose.Types.ObjectId.isValid(id)) {
-      let student = await Student.findById(id).lean().exec();
-      if (!student) {
+      let teacher = await Teacher.findById(id).lean().exec();
+      if (!teacher) {
         return res.status(404).send("Student Not found");
       }
-      if (student) {
+      if (teacher) {
         if (
           email &&
-          (await StudentServiceInstance.checkEmailExistWithOtherStudnet(
+          (await TeacherServiceInstance.checkEmailExistWithOtherTeacher(
             email,
             id
           )) === false
@@ -176,21 +167,21 @@ const updatestudent = async (req, res) => {
           });
         }
         if (
-          studentID &&
-          (await StudentServiceInstance.checkStudentIDExistWithOtherStudent(
-            studentID,
+          employeeID &&
+          (await TeacherServiceInstance.checkemployeeIDExistWithOtherTeacher(
+            employeeID,
             id
           )) === false
         ) {
           return res.status(200).json({
             statusCode: 409,
-            message: "student id already exists with other account",
+            message: "Teacher id already exists with other account",
             data: [],
           });
         }
       }
     }
-    const newstudent = {
+    const newteacher = {
       createdby,
       name,
       email,
@@ -199,17 +190,14 @@ const updatestudent = async (req, res) => {
       dateOfBirth,
       gender,
       contactNumber,
-      enrollmentDate,
-      studentID,
-      parentName,
-      parentEmail,
-      parentContactNumber,
+      address,
+      JoiningDate,
+      employeeID,
       emergencyContactName,
       emergencyContactNumber,
-      address,
     };
 
-    const student = await Student.findByIdAndUpdate(id, newstudent, {
+    const teacher = await Teacher.findByIdAndUpdate(id, newteacher, {
       new: true,
       runValidators: true,
     });
@@ -217,11 +205,11 @@ const updatestudent = async (req, res) => {
     res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "Student Successfully Updated.",
-      user: student,
+      message: "Teacher Successfully Updated.",
+      user: teacher,
     });
   } catch (err) {
-    console.log("Update Student error: ", err.message);
+    console.log("Update Teacher error: ", err.message);
     res.status(500).json({
       statusCode: 500,
       status: "error",
@@ -231,17 +219,17 @@ const updatestudent = async (req, res) => {
   }
 };
 
-const deletestudent = async (req, res) => {
+const deleteteacher = async (req, res) => {
   const id = req.params.id;
   if (mongoose.Types.ObjectId.isValid(id)) {
     try {
-      const student = await Student.findByIdAndDelete(id);
+      const teacher = await Teacher.findByIdAndDelete(id);
 
-      if (!student) {
+      if (!teacher) {
         return res.status(404).json({
           statusCode: 404,
           status: "error",
-          message: "Student not found",
+          message: "teacher not found",
           data: {},
         });
       }
@@ -249,15 +237,15 @@ const deletestudent = async (req, res) => {
       res.status(200).json({
         statusCode: 200,
         status: "success",
-        message: "Student deleted successfully",
-        data: { student },
+        message: "teacher deleted successfully",
+        data: { teacher },
       });
     } catch (err) {
-      console.error("Error deleting student:", err.message);
+      console.error("Error deleting teacher:", err.message);
       res.status(500).json({
         statusCode: 500,
         status: "error",
-        message: "An error occurred while deleting the student",
+        message: "An error occurred while deleting the teacher",
         data: {},
       });
     }
@@ -272,22 +260,22 @@ const deletestudent = async (req, res) => {
 };
 
 const fetchbyid = async (req, res) => {
-  const id = req.params.id;
   if (mongoose.Types.ObjectId.isValid(id)) {
     try {
-      const student = await Student.findById(id);
+      const id = req.params.id;
+      const teacher = await Teacher.findById(id);
       res.status(200).json({
         statusCode: 200,
         status: "success",
-        message: "Student fetched successfully",
-        data: { student },
+        message: "teacher fetched successfully",
+        data: { teacher },
       });
     } catch (err) {
-      console.error("Error fetching student:", err.message);
+      console.error("Error fetching teacher:", err.message);
       res.status(500).json({
         statusCode: 500,
         status: "error",
-        message: "An error occurred while fetching the student",
+        message: "An error occurred while fetching the teacher",
         data: {},
       });
     }
@@ -302,9 +290,9 @@ const fetchbyid = async (req, res) => {
 };
 
 module.exports = {
-  addstudent: addstudent,
-  fetchallstudent: fetchallstudent,
-  updatestudent: updatestudent,
-  deletestudent: deletestudent,
+  addteacher: addteacher,
+  fetchallteacher: fetchallteacher,
+  updateteacher: updateteacher,
+  deleteteacher: deleteteacher,
   fetchbyid: fetchbyid,
 };
